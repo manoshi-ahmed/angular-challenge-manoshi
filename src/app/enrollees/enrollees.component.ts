@@ -42,15 +42,21 @@ export class EnrolleesComponent implements OnInit {
   count: Number=10;
   p: Number = 1;
   pageLength="10";
+
+  error;
   
 
   // constructor
   constructor(private dataService: DataService, private snackBar: MatSnackBar) { }
 
-  // gets the data from server
+  // gets the data from server else shows error
   ngOnInit(): void {
-    this.dataService.sendGetRequest().subscribe((data: any[])=>{
+    this.dataService.sendGetRequest().subscribe(
+      (data: any[])=>{
         this.enrollees = data;
+      }, (err) => {
+        this.error = "Service Temporarily unavailable";
+        console.log(err);
     }
     ); 
   }

@@ -133,3 +133,16 @@ mat-form-field {
 .matSelect{
   padding: 0;
 }
+
+/*************** Server down ***************/
+
+.error{
+  padding-top: 10%;
+  font-size: xx-large;
+  text-align: center;
+}
+.error2{
+  font-size: large;
+  text-align: center;
+  padding-bottom: 10%;
+}
