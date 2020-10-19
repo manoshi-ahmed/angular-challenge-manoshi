@@ -4,7 +4,8 @@ This project was generated with [Angular CLI](https://github.com/angular/angular
 
 ## Development server
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files. If showing error 
+'Could not find module “@angular-devkit/build-angular”', install @angular-devkit/build-angular as dev dependency. This package is newly introduced in Angular 6.0.  To install run `npm install --save-dev @angular-devkit/build-angular`
 
 ## Code scaffolding
 
