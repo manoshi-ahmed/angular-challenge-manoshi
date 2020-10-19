@@ -41,7 +41,6 @@ export class EnrolleesComponent implements OnInit {
   // variables used for pagination
   count: Number=10;
   p: Number = 1;
-
   pageLength="10";
   
 
@@ -51,13 +50,9 @@ export class EnrolleesComponent implements OnInit {
   // gets the data from server
   ngOnInit(): void {
     this.dataService.sendGetRequest().subscribe((data: any[])=>{
-      this.enrollees = data;
-    //   if (data.status === 200) {
-    //     console.log(data);
-    //   }
-    // }, err => {
-    //   alert("There was a problem with connecting to the server");
-    }); 
+        this.enrollees = data;
+    }
+    ); 
   }
 
   // getLength() function used to set pagination

@@ -14,7 +14,8 @@ export class DataService {
 
 
   public sendGetRequest(){
-    return this.httpClient.get(this.REST_API_SERVER);
+    var val= this.httpClient.get(this.REST_API_SERVER);
+    return val;
   }
 
   updateEnrollee(enrollee: Enrollee, id: string): Observable<any> {
