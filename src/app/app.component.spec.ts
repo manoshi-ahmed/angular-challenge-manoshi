@@ -1,7 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { By } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import { MatIconModule } from '@angular/material/icon';
+import { MatToolbarModule } from '@angular/material/toolbar';
+
 
 import { AppComponent } from './app.component';
 
@@ -9,7 +11,9 @@ describe('AppComponent', () => {
   beforeEach(async () => {
     await TestBed.configureTestingModule({
       imports: [
-        RouterTestingModule
+        RouterTestingModule,
+        MatIconModule,
+        MatToolbarModule
       ],
       declarations: [
         AppComponent
@@ -29,9 +33,11 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('Centene');
   });
 
-  it('should contain one menu button on the page',() => {
+  
+  it('should contain List of Enrollees label on the page',() => {
     const fixture = TestBed.createComponent(AppComponent);
-      const optionSize= fixture.debugElement.queryAll(By.css('button'));
-      expect(optionSize.length >=1).toBeTruthy();
+      const label= fixture.debugElement.queryAll(By.css('.label'));
+      
+      expect(label[0].nativeNode.textContent).toBe("List of Enrollees");
   });
 });

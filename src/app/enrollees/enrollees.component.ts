@@ -13,6 +13,7 @@ import { Pipe, PipeTransform } from '@angular/core';
   styleUrls: ['./enrollees.component.css']
 })
 export class EnrolleesComponent implements OnInit {
+  [x: string]: any;
 
   enrollees=[];
   selectedEnrollee: Enrollee;
@@ -55,7 +56,7 @@ export class EnrolleesComponent implements OnInit {
       (data: any[])=>{
         this.enrollees = data;
       }, (err) => {
-        this.error = "Service Temporarily unavailable";
+        this.error = "Service Temporarily Unavailable";
         console.log(err);
     }
     ); 

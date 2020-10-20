@@ -21,6 +21,7 @@ import { CommonModule } from '@angular/common';
 
 
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,12 +44,8 @@ import { CommonModule } from '@angular/common';
     MatButtonModule, 
     MatSnackBarModule,
     MatToolbarModule,
-    CommonModule,
+    CommonModule
   ],
-  entryComponents: [
-    EnrolleesComponent
-  ],
-
   providers: [],
   bootstrap: [AppComponent]
 })

@@ -1,142 +1,145 @@
-<div *ngIf="error">
+<div *ngIf="error; else noError">
   <h1 class="error" > {{error}}</h1>
   <div class="error2">The server is currently unable to service your request. Please try again later.</div>
 </div>
 
-<div *ngIf="!error"> <!-- main block that contains search area and the container class-->
-  <!-- ************************************************************************************************************** -->
-                                                     <!-- Search Area -->
-  <!-- ************************************************************************************************************** -->
-  <div class="top">
-    <div class="pageSize">Show 
-      <select [(ngModel)]="pageLength" (ngModelChange)="getLength($event)">
-        <option value="10" disabled selected hidden>10</option>
-        <option [ngValue]="10" >10</option>
-        <option [ngValue]="15" >15</option>
-        <option [ngValue]="25" >25</option>
-      </select> entries
+<ng-template #noError>
+  <div> <!-- main block that contains search area and the container class-->
+    <!-- ************************************************************************************************************** -->
+                                                       <!-- Search Area -->
+    <!-- ************************************************************************************************************** -->
+    <div class="top">
+      <div class="pageSize">Show 
+        <select [(ngModel)]="pageLength" (ngModelChange)="getLength($event)">
+          <option value="10" disabled selected hidden>10</option>
+          <option [ngValue]="10" >10</option>
+          <option [ngValue]="15" >15</option>
+          <option [ngValue]="25" >25</option>
+        </select> entries
+      </div>
+      <div>
+        <input class= "search" type="text" id="searchInput" [(ngModel)]="input"  (input)="search()" placeholder="Search by name or ID"/>
+      </div>
     </div>
-    <div>
-      <input class= "search" type="text" id="searchInput" [(ngModel)]="input"  (input)="search()" placeholder="Search by name or ID"/>
-    </div>
-  </div>
-  
-
-  <!-- ************************************************************************************************************** -->
-                                              <!-- Table that contains the list --> 
-  <!-- ************************************************************************************************************** -->
-  
-  <div class="container"> <!-- container block that contains the table and pagination block -->
-    <table class= "main_table" > <!-- table that contains the list of all  enrollees -->
-
-      <!-- ****************************************************************************-->
-                            <!-- headers of the table -->
-      <!-- *****************************************************************************-->
-
-      <thead>
-
-        <tr class="allHeader">
-          
     
-          <th class="idHeader" (click)="sort('id')">
-            ID<img class="icons" [src]="sorting_arrow" alt="up down symbol"/>
-          </th>
-          
-          
-          <th class="nameHeader" (click)="sort('name')">
-             Name<img class="icons" [src]="sorting_arrow" alt="up down symbol"/>
-          </th>
-          
-          
-          <th class="dobHeader">Date of Birth</th>
-          
-          
-          <th class="statusHeader" (click)="sort('active')">
-            Status<img class="icons" [src]="sorting_arrow" alt="up down symbol"/>
-          </th>
-          
-          
-          <th class="actionHeader">Action</th>
-
-        </tr>
-
-      </thead>
-
-      <!-- ****************************************************************************-->
-                  <!-- body of the table that contains the list of enrollees-->
-      <!-- *****************************************************************************-->
-      <tbody>
-        <tr *ngFor= "let enrollee of enrollees | orderBy: key: reverse | paginate: { itemsPerPage: count, currentPage: p } " 
-        [class.selected]="enrollee === selectedEnrollee">
-          <!------------------ ID column -------------------->
-          <td>{{enrollee.id}}</td>
-
-          <!----------------- Name column ------------------->
-          <td> 
-            <span *ngIf="!enrollee.isEditable">{{enrollee.name| titlecase}}</span>
-            <span *ngIf="enrollee.isEditable">
-              <input matInput type="text"  placeholder="Enter name" class="upName" name="upName" [disabled]="!enrollee.isEditable" [formControl]="updatedName"/>
-            </span> 
+  
+    <!-- ************************************************************************************************************** -->
+                                                <!-- Table that contains the list --> 
+    <!-- ************************************************************************************************************** -->
+    
+    <div class="container"> <!-- container block that contains the table and pagination block -->
+      <table class= "main_table" > <!-- table that contains the list of all  enrollees -->
+  
+        <!-- ****************************************************************************-->
+                              <!-- headers of the table -->
+        <!-- *****************************************************************************-->
+  
+        <thead>
+  
+          <tr class="allHeader">
             
-          </td>
-          
-          <!------------- Date of Birth column --------------->
-          <td>{{formatDate(enrollee.dateOfBirth)}}</td>
-          
-          <!----------- Activation status column ------------>
-          <td>
-            <span *ngIf="!enrollee.isEditable">
-              <div *ngIf="enrollee.active; else notActive" >
-                <img class="icons" [src]="green_dot" alt="green dot symbol"/> 
-                Active
-              </div>
-              <ng-template #notActive>
-                <img class="icons" [src]="red_dot" alt="red dot symbol"/> Inactive
-              </ng-template>
-            </span>
-            <span *ngIf="enrollee.isEditable">
-              <mat-form-field>
-                <mat-label>Select</mat-label>
-
-              <mat-select class="matSelect" name="status" [formControl]="updatedStatus"> 
-                <mat-option value= "true" >Active</mat-option >
-                <mat-option value= "">Inactive</mat-option>
-              </mat-select>
-              </mat-form-field>
-            </span>
-          </td>
-          
-          <!---------------- Action column ------------------>
-          <td> 
-            <!-- edit button that shows edit icon-->
-            <button mat-button class="editButton changeToCursor" (click)="enrollee.isEditable=!enrollee.isEditable; onSelect(enrollee);" *ngIf="!enrollee.isEditable">
-              <img class="editIcon" [src]="edit_icon" alt="edit icon"/>
-            </button>
-            <button *ngIf="enrollee.isEditable" class="allButtons" (click)="enrollee.isEditable=!enrollee.isEditable; modifyEnrolle(selectedEnrollee.id, updatedName.value, updatedStatus.value, selectedEnrollee.dateOfBirth)">
-              Update
-            </button>
-            <button *ngIf="enrollee.isEditable" class="allButtons" (click)="enrollee.isEditable=!enrollee.isEditable">
-              Cancel
-            </button>
-          </td>
-        </tr>
-      </tbody>
-    </table> 
-    
-    <!-- ****************************************************************************-->
-                                   <!-- pagination-->
-      <!-- *****************************************************************************-->
-    <div class="bottom">
-      <!-- <ul>
-        <div class="pagenumber">Showing 1 to 10 of 21 entries</div> 
-      </ul> -->
-      <ul class="pagination">
-      <pagination-controls (pageChange)="p = $event"></pagination-controls>
-    </ul>
-    </div> 
-
-    
-  </div>  <!-- ending container block that contains the table and paginator -->
-
-</div> <!-- ending main block that contains search area and container class-->
+      
+            <th class="idHeader" (click)="sort('id')">
+              ID<img class="icons" [src]="sorting_arrow" alt="up down symbol"/>
+            </th>
+            
+            
+            <th class="nameHeader" (click)="sort('name')">
+               Name<img class="icons" [src]="sorting_arrow" alt="up down symbol"/>
+            </th>
+            
+            
+            <th class="dobHeader">Date of Birth</th>
+            
+            
+            <th class="statusHeader" (click)="sort('active')">
+              Status<img class="icons" [src]="sorting_arrow" alt="up down symbol"/>
+            </th>
+            
+            
+            <th class="actionHeader">Action</th>
+  
+          </tr>
+  
+        </thead>
+  
+        <!-- ****************************************************************************-->
+                    <!-- body of the table that contains the list of enrollees-->
+        <!-- *****************************************************************************-->
+        <tbody>
+          <tr *ngFor= "let enrollee of enrollees | orderBy: key: reverse | paginate: { itemsPerPage: count, currentPage: p } " 
+          [class.selected]="enrollee === selectedEnrollee">
+            <!------------------ ID column -------------------->
+            <td>{{enrollee.id}}</td>
+  
+            <!----------------- Name column ------------------->
+            <td> 
+              <span *ngIf="!enrollee.isEditable">{{enrollee.name| titlecase}}</span>
+              <span *ngIf="enrollee.isEditable">
+                <input matInput type="text"  placeholder="Enter name" class="upName" name="upName" [disabled]="!enrollee.isEditable" [formControl]="updatedName"/>
+              </span> 
+              
+            </td>
+            
+            <!------------- Date of Birth column --------------->
+            <td>{{formatDate(enrollee.dateOfBirth)}}</td>
+            
+            <!----------- Activation status column ------------>
+            <td>
+              <span *ngIf="!enrollee.isEditable">
+                <div *ngIf="enrollee.active; else notActive" >
+                  <img class="icons" [src]="green_dot" alt="green dot symbol"/> 
+                  Active
+                </div>
+                <ng-template #notActive>
+                  <img class="icons" [src]="red_dot" alt="red dot symbol"/> Inactive
+                </ng-template>
+              </span>
+              <span *ngIf="enrollee.isEditable">
+                <mat-form-field>
+                  <mat-label>Select</mat-label>
+  
+                <mat-select class="matSelect" name="status" [formControl]="updatedStatus"> 
+                  <mat-option value= "true" >Active</mat-option >
+                  <mat-option value= "">Inactive</mat-option>
+                </mat-select>
+                </mat-form-field>
+              </span>
+            </td>
+            
+            <!---------------- Action column ------------------>
+            <td> 
+              <!-- edit button that shows edit icon-->
+              <button mat-button class="editButton changeToCursor" (click)="enrollee.isEditable=!enrollee.isEditable; onSelect(enrollee);" *ngIf="!enrollee.isEditable">
+                <img class="editIcon" [src]="edit_icon" alt="edit icon"/>
+              </button>
+              <button *ngIf="enrollee.isEditable" class="allButtons" (click)="enrollee.isEditable=!enrollee.isEditable; modifyEnrolle(selectedEnrollee.id, updatedName.value, updatedStatus.value, selectedEnrollee.dateOfBirth)">
+                Update
+              </button>
+              <button *ngIf="enrollee.isEditable" class="allButtons" (click)="enrollee.isEditable=!enrollee.isEditable">
+                Cancel
+              </button>
+            </td>
+          </tr>
+        </tbody>
+      </table> 
+      
+      <!-- ****************************************************************************-->
+                                     <!-- pagination-->
+        <!-- *****************************************************************************-->
+      <div class="bottom">
+        <!-- <ul>
+          <div class="pagenumber">Showing 1 to 10 of 21 entries</div> 
+        </ul> -->
+        <ul class="pagination">
+        <pagination-controls (pageChange)="p = $event"></pagination-controls>
+      </ul>
+      </div> 
+  
+      
+    </div>  <!-- ending container block that contains the table and paginator -->
+  
+  </div> <!-- ending main block that contains search area and container class-->
+  
+</ng-template>
 
