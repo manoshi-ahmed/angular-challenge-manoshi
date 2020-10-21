@@ -13,9 +13,6 @@ import { CommonModule } from '@angular/common';
 import { Enrollee } from '../enrollee';
 import { enrollees } from 'server/enrollees';
 import { of } from 'rxjs';
-import { Observable } from 'rxjs';
-
-
 
 
 
@@ -73,35 +70,43 @@ describe('EnrolleesComponent', () => {
     const showPaginator= fixture.debugElement.queryAll(By.css('.bottom'));
     expect(showPaginator[0].nativeNode.childNodes[0].childNodes[0].localName).toBe("pagination-controls");
   });
-
-  it('should show header row in the table',() => {
+  it('should show header row with 5 headers in the table',() => {
     fixture.detectChanges();
-    const showNoList= fixture.debugElement.queryAll(By.css('.main_table'));
-    expect(showNoList[0].nativeNode.childNodes[0].childNodes.length).toBe(1);
+    const showNoList= fixture.debugElement.queryAll(By.css('.allHeader'));
+    expect(showNoList[0].nativeNode.childNodes.length).toBe(5);
     });
-    it('should show no elements in the table if there is no data',() => {
-      fixture.detectChanges();
-      const showNoList= fixture.debugElement.queryAll(By.css('tbody tr'));
-      expect(showNoList.length).toBe(0);
-    });
-    it('should show one data element When there is one data in the server',() => {
-      fixture.detectChanges();
-
-      component.enrollees = [
-          {id:'36653835-fbe0-4c42-a93c-3e561823934f',
-          name: 'Gabe Newell',
-          dateOfBirth: '1962-11-3',
-          active: true
-        }];
-      fixture.detectChanges();
-
-      fixture.whenStable().then(() => fixture.detectChanges());
-      const showTable= fixture.debugElement.queryAll(By.css('tbody tr'));
-      expect(showTable.length).toBe(1);
-    });
+  it('should show no elements in the table if there is no data',() => {
+    fixture.detectChanges();
+    const showNoList= fixture.debugElement.queryAll(By.css('tbody tr'));
+    expect(showNoList.length).toBe(0);
   });
+  it('should show one data element When there is one data in the server',() => {
+    fixture.detectChanges();
+
+    component.enrollees = [
+        {id:'36653835-fbe0-4c42-a93c-3e561823934f',
+        name: 'Gabe Newell',
+        dateOfBirth: '1962-11-3',
+        active: true
+      }];
+    fixture.detectChanges();
+    fixture.whenStable().then(() => fixture.detectChanges());
+    const showTable= fixture.debugElement.queryAll(By.css('tbody tr'));
+    expect(showTable.length).toBe(1);
+  });
+  it('should correctly render the passed @Input value on search',() => {
+    fixture.detectChanges();
+    const searchInput= fixture.debugElement.queryAll(By.css('input[type=text]'));
+    const inputEl = searchInput[0].nativeElement;
+    inputEl.value = 'Gabe';
+    fixture.detectChanges();
+    expect(searchInput[0].nativeElement.value).toBe('Gabe'); 
+  });
+  });
+  
 
  
+  // dataservice stub to test the table
 class DataServiceStub{
   public sendGetRequest(){
     return of([]);

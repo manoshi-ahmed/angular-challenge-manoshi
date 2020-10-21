@@ -26,7 +26,7 @@ describe('DataService', () => {
     const service: DataService = TestBed.get(DataService);
     expect(service).toBeTruthy();
   });
-  it('should test DataService.sendGetRequest',()=>{
+  it('should test DataService.sendGetRequest() function',()=>{
       const testdata: Enrollee[]= [
         {id:'36653835-fbe0-4c42-a93c-3e561823934f',
           active: true,

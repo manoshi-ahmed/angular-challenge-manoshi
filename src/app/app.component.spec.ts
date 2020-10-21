@@ -34,7 +34,7 @@ describe('AppComponent', () => {
   });
 
   
-  it('should contain List of Enrollees label on the page',() => {
+  it('should contain List of Enrollees header on the page',() => {
     const fixture = TestBed.createComponent(AppComponent);
       const label= fixture.debugElement.queryAll(By.css('.label'));
       
