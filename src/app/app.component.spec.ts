@@ -33,11 +33,9 @@ describe('AppComponent', () => {
     expect(app.title).toEqual('Centene');
   });
 
-  
-  it('should contain List of Enrollees header on the page',() => {
+  it('should contain List of Enrollees header on the page', () => {
     const fixture = TestBed.createComponent(AppComponent);
-      const label= fixture.debugElement.queryAll(By.css('.label'));
-      
-      expect(label[0].nativeNode.textContent).toBe("List of Enrollees");
+    const label = fixture.debugElement.queryAll(By.css('.label'));
+    expect(label[0].nativeNode.textContent).toBe('List of Enrollees');
   });
 });

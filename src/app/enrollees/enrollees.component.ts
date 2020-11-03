@@ -2,9 +2,8 @@ import { DataService } from '../data.service';
 import { Enrollee } from '../enrollee';
 
 import { Component, OnInit } from '@angular/core';
-import { FormControl} from '@angular/forms';
+import { FormControl } from '@angular/forms';
 import { MatSnackBar } from '@angular/material/snack-bar';
-import { Pipe, PipeTransform } from '@angular/core';
 
 
 @Component({
@@ -15,37 +14,37 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class EnrolleesComponent implements OnInit {
   [x: string]: any;
 
-  enrollees=[];
+  enrollees = [];
   selectedEnrollee: Enrollee;
 
   // formControl variables
-  updatedName= new FormControl('');  
-  updatedStatus= new FormControl();
+  updatedName = new FormControl('');
+  updatedStatus = new FormControl();
 
 
   // image variables
-  green_dot:string="assets/images/green-dot.png";
-  red_dot:string="assets/images/red-dot.png";
-  sorting_arrow:string="assets/images/sorting-arrow.png";
-  edit_icon:string="assets/images/edit-icon.png";
-  search_icon:string="assets/images/search-icon.png";
+  greenDot = 'assets/images/green-dot.png';
+  redDot = 'assets/images/red-dot.png';
+  sortingArrow = 'assets/images/sorting-arrow.png';
+  editIcon = 'assets/images/edit-icon.png';
+  searchIcon = 'assets/images/search-icon.png';
 
 
   // variables used in sort() function
-  key:string= 'id';
-  reverse:boolean=false;
+  key = 'id';
+  reverse = false;
 
   // variable used in search() function
-  input:string;
-  id:string;
+  input: string;
+  id: string;
 
   // variables used for pagination
-  count: Number=10;
-  p: Number = 1;
-  pageLength="10";
+  count = 10;
+  p = 1;
+  pageLength = '10';
 
   error;
-  
+
 
   // constructor
   constructor(private dataService: DataService, private snackBar: MatSnackBar) { }
@@ -53,117 +52,117 @@ export class EnrolleesComponent implements OnInit {
   // gets the data from server else shows error
   ngOnInit(): void {
     this.dataService.sendGetRequest().subscribe(
-      (data: any[])=>{
+      (data: any[]) => {
         this.enrollees = data;
       }, (err) => {
-        this.error = "Service Temporarily Unavailable";
+        this.error = 'Service Temporarily Unavailable';
         console.log(err);
-    }
-    ); 
+      }
+    );
   }
 
   // getLength() function used to set pagination
-  getLength(count:string){
-    this.count=parseInt(count);
+  getLength(count: string): void {
+    this.count = parseInt(count, 10);
   }
 
   // onSelect() function to select particular enrollee
-  onSelect(Enrollee : Enrollee): void {
-    this.selectedEnrollee = Enrollee;    
+  onSelect(specificEnrollee: Enrollee): void {
+    this.selectedEnrollee = specificEnrollee;
   }
 
   // search() function to search by name from the table
-  search(){
-    if(this.input !=""){
-      this.enrollees=this.enrollees.filter(res=>{
-        let value=(res.id.match(this.input))  || (res.name.toLocaleLowerCase().match(this.input.toLocaleLowerCase()));
+  search(): void {
+    if (this.input !== '') {
+      this.enrollees = this.enrollees.filter(res => {
+        const value = (res.id.match(this.input)) || (res.name.toLocaleLowerCase().match(this.input.toLocaleLowerCase()));
         return value;
       });
-      
-    }else if (this.input ==""){
+
+    } else if (this.input === '') {
       this.ngOnInit();
     }
   }
-  
+
   // sort() function used to sort columns
-  sort(key){
-    this.key=key;
-    this.reverse=!this.reverse;
+  sort(key): void {
+    this.key = key;
+    this.reverse = !this.reverse;
   }
 
   // formatDate() function formats the date of Birth to mm/dd/yyyy
-  formatDate(input) {
-    if (input == null){
-      return "-";
+  formatDate(input): string {
+    if (input == null) {
+      return '-';
     } else {
-      var arrDate = input.split("-");
-      return arrDate[1] + "/" +arrDate[2] + "/" + arrDate[0];
+      const arrDate = input.split('-');
+      return arrDate[1] + '/' + arrDate[2] + '/' + arrDate[0];
     }
   }
 
   // modifyEnrollee() function is used to modify enrollee
-  modifyEnrolle(id:string, name:string, active:string, dateOfBirth:string){
+  modifyEnrolle(id: string, name: string, active: string, dateOfBirth: string): void {
 
     // if input name is empty => shows error
-    if(name==null){
+    if (name == null) {
       this.updatedName.reset();
       this.updatedStatus.reset();
       this.openSnackbar('Invalid name! Please try again.', '', 'red-snackbar');
-    } 
+    }
     // else (input name is not empty)
-    else{ 
+    else {
 
-      var pattern = new RegExp(/[@~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/); //unacceptable chars
-      let trimmedName = name.trim(); //trim name
+      const pattern = new RegExp(/[@~`!#$%\^&*+=\-\[\]\\';,/{}|\\":<>\?]/); // nunacceptable chars
+      const trimmedName = name.trim(); // trim name
 
 
-      //If input name only includes "space(s)" or starts with number or includes unacceptable character => shows error
-      if(trimmedName.length == 0 || parseInt(name)|| pattern.test(name)){
+      // If input name only includes "space(s)" or starts with number or includes unacceptable character => shows error
+      if (trimmedName.length === 0 || parseInt(name, 10) || pattern.test(name)) {
 
         this.updatedName.reset();
         this.updatedStatus.reset();
         this.openSnackbar('Invalid name! Please try again.', '', 'red-snackbar');
-      } 
+      }
 
       // else modifys the data and show notification that information updated
-      else{   
-        name=name.split(' ').map(w => w[0].toUpperCase() + w.substr(1).toLowerCase()).join(' '); 
-        
+      else {
+        name = name.split(' ').map(w => w[0].toUpperCase() + w.substr(1).toLowerCase()).join(' ');
+
         console.log(name);
         this.selectedEnrollee.name = name;
-        
-        let data = {
-          "active": Boolean(active),
-          "name": name,
-          "dateOfBirth":dateOfBirth
-        }
-        this.dataService.updateEnrollee(data,id).subscribe();
-      
+
+        const data = {
+          'active': Boolean(active),
+          'name': name,
+          'dateOfBirth': dateOfBirth
+        };
+        this.dataService.updateEnrollee(data, id).subscribe();
+
         // user selects activation status
-        if(active === ""){
+        if (active === '') {
           this.selectedEnrollee.active = false;
-        } else{ 
+        } else {
           this.selectedEnrollee.active = true;
-        } 
+        }
 
-        //resets the form fields
+        // resets the form fields
         this.updatedName.reset();
-        this.updatedStatus.reset();  
+        this.updatedStatus.reset();
 
-        //shows notification
+        // shows notification
         this.openSnackbar('Enrollee Information Updated Successfully!', '', 'green-snackbar');
       }
-    } 
+    }
   }
 
   // function to show notification using material snackbar
-  openSnackbar(message, action, className: string): void{
+  openSnackbar(message, action, className: string): void {
     this.snackBar.open(message, action, {
       duration: 3000,
-      horizontalPosition: "center",
-      verticalPosition: "top",
+      horizontalPosition: 'center',
+      verticalPosition: 'top',
       panelClass: [className]
-        });
+    });
 
   }
 

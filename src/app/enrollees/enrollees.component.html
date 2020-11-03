@@ -40,12 +40,12 @@
             
       
             <th class="idHeader" (click)="sort('id')">
-              ID<img class="icons" [src]="sorting_arrow" alt="up down symbol"/>
+              ID<img class="icons" [src]="sortingArrow" alt="up down symbol"/>
             </th>
             
             
             <th class="nameHeader" (click)="sort('name')">
-               Name<img class="icons" [src]="sorting_arrow" alt="up down symbol"/>
+               Name<img class="icons" [src]="sortingArrow" alt="up down symbol"/>
             </th>
             
             
@@ -53,7 +53,7 @@
             
             
             <th class="statusHeader" (click)="sort('active')">
-              Status<img class="icons" [src]="sorting_arrow" alt="up down symbol"/>
+              Status<img class="icons" [src]="sortingArrow" alt="up down symbol"/>
             </th>
             
             
@@ -88,11 +88,11 @@
             <td>
               <span *ngIf="!enrollee.isEditable">
                 <div *ngIf="enrollee.active; else notActive" >
-                  <img class="icons" [src]="green_dot" alt="green dot symbol"/> 
+                  <img class="icons" [src]="greenDot" alt="green dot symbol"/> 
                   Active
                 </div>
                 <ng-template #notActive>
-                  <img class="icons" [src]="red_dot" alt="red dot symbol"/> Inactive
+                  <img class="icons" [src]="redDot" alt="red dot symbol"/> Inactive
                 </ng-template>
               </span>
               <span *ngIf="enrollee.isEditable">
@@ -111,7 +111,7 @@
             <td> 
               <!-- edit button that shows edit icon-->
               <button mat-button class="editButton changeToCursor" (click)="enrollee.isEditable=!enrollee.isEditable; onSelect(enrollee);" *ngIf="!enrollee.isEditable">
-                <img class="editIcon" [src]="edit_icon" alt="edit icon"/>
+                <img class="editIcon" [src]="editIcon" alt="edit icon"/>
               </button>
               <button *ngIf="enrollee.isEditable" class="allButtons" (click)="enrollee.isEditable=!enrollee.isEditable; modifyEnrolle(selectedEnrollee.id, updatedName.value, updatedStatus.value, selectedEnrollee.dateOfBirth)">
                 Update

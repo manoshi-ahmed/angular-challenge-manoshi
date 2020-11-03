@@ -36,12 +36,11 @@ import { CommonModule } from '@angular/common';
     NgxPaginationModule,
     Ng2OrderModule,
     ReactiveFormsModule,
-    MatPaginatorModule,
     MatTableModule,
     MatFormFieldModule,
     MatSelectModule,
     MatIconModule,
-    MatButtonModule, 
+    MatButtonModule,
     MatSnackBarModule,
     MatToolbarModule,
     CommonModule

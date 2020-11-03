@@ -5,13 +5,12 @@ import { NgxPaginationModule } from 'ngx-pagination';
 
 import { EnrolleesComponent } from './enrollees.component';
 import { DataService } from '../data.service';
-import { By } from '@angular/platform-browser'
+import { By } from '@angular/platform-browser';
 import { Ng2OrderModule } from 'ng2-order-pipe';
 import { FormsModule } from '@angular/forms';
 import { MatIconModule } from '@angular/material/icon';
 import { CommonModule } from '@angular/common';
 import { Enrollee } from '../enrollee';
-import { enrollees } from 'server/enrollees';
 import { of } from 'rxjs';
 
 
@@ -22,22 +21,22 @@ describe('EnrolleesComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ 
-        HttpClientTestingModule,  
-        MatSnackBarModule, 
+      imports: [
+        HttpClientTestingModule,
+        MatSnackBarModule,
         NgxPaginationModule,
         Ng2OrderModule,
         FormsModule,
         MatIconModule,
         CommonModule
       ],
-      declarations: [ EnrolleesComponent ],
-      providers: [ 
+      declarations: [EnrolleesComponent],
+      providers: [
         // DataService
-        {provide: DataService, useClass: DataServiceStub}
+        { provide: DataService, useClass: DataServiceStub }
       ]
     })
-    .compileComponents();
+      .compileComponents();
   });
 
   beforeEach(() => {
@@ -49,69 +48,69 @@ describe('EnrolleesComponent', () => {
   it('should create enrollees component', () => {
     expect(component).toBeTruthy();
   });
-  it('should contain select option for paginator',() => {
+  it('should contain select option for paginator', () => {
     fixture.detectChanges();
-    const option= fixture.debugElement.queryAll(By.css('.top'));
-    expect(option[0].nativeNode.childNodes[0].childNodes[1].localName).toBe("select");
+    const option = fixture.debugElement.queryAll(By.css('.top'));
+    expect(option[0].nativeNode.childNodes[0].childNodes[1].localName).toBe('select');
   });
 
-  it('should contain searchbox on the page',() => {
+  it('should contain searchbox on the page', () => {
     fixture.detectChanges();
-    const search= fixture.debugElement.queryAll(By.css('.top'));
-    expect(search[0].nativeNode.childNodes[1].childNodes[0].localName).toBe("input");
+    const search = fixture.debugElement.queryAll(By.css('.top'));
+    expect(search[0].nativeNode.childNodes[1].childNodes[0].localName).toBe('input');
   });
-  it('should contain table on the page',() => {
+  it('should contain table on the page', () => {
     fixture.detectChanges();
-    const showTable= fixture.debugElement.queryAll(By.css('.container'));
-    expect(showTable[0].nativeNode.childNodes[0].localName).toBe("table");
+    const showTable = fixture.debugElement.queryAll(By.css('.container'));
+    expect(showTable[0].nativeNode.childNodes[0].localName).toBe('table');
   });
-  it('should contain paginator on the page',() => {
+  it('should contain paginator on the page', () => {
     fixture.detectChanges();
-    const showPaginator= fixture.debugElement.queryAll(By.css('.bottom'));
-    expect(showPaginator[0].nativeNode.childNodes[0].childNodes[0].localName).toBe("pagination-controls");
+    const showPaginator = fixture.debugElement.queryAll(By.css('.bottom'));
+    expect(showPaginator[0].nativeNode.childNodes[0].childNodes[0].localName).toBe('pagination-controls');
   });
-  it('should show header row with 5 headers in the table',() => {
+  it('should show header row with 5 headers in the table', () => {
     fixture.detectChanges();
-    const showNoList= fixture.debugElement.queryAll(By.css('.allHeader'));
+    const showNoList = fixture.debugElement.queryAll(By.css('.allHeader'));
     expect(showNoList[0].nativeNode.childNodes.length).toBe(5);
-    });
-  it('should show no elements in the table if there is no data',() => {
+  });
+  it('should show no elements in the table if there is no data', () => {
     fixture.detectChanges();
-    const showNoList= fixture.debugElement.queryAll(By.css('tbody tr'));
+    const showNoList = fixture.debugElement.queryAll(By.css('tbody tr'));
     expect(showNoList.length).toBe(0);
   });
-  it('should show one data element When there is one data in the server',() => {
+  it('should show one data element When there is one data in the server', () => {
     fixture.detectChanges();
 
     component.enrollees = [
-        {id:'36653835-fbe0-4c42-a93c-3e561823934f',
+      {
+        id: '36653835-fbe0-4c42-a93c-3e561823934f',
         name: 'Gabe Newell',
         dateOfBirth: '1962-11-3',
         active: true
       }];
     fixture.detectChanges();
     fixture.whenStable().then(() => fixture.detectChanges());
-    const showTable= fixture.debugElement.queryAll(By.css('tbody tr'));
+    const showTable = fixture.debugElement.queryAll(By.css('tbody tr'));
     expect(showTable.length).toBe(1);
   });
-  it('should correctly render the passed @Input value on search',() => {
+  it('should correctly render the passed @Input value on search', () => {
     fixture.detectChanges();
-    const searchInput= fixture.debugElement.queryAll(By.css('input[type=text]'));
+    const searchInput = fixture.debugElement.queryAll(By.css('input[type=text]'));
     const inputEl = searchInput[0].nativeElement;
     inputEl.value = 'Gabe';
     fixture.detectChanges();
-    expect(searchInput[0].nativeElement.value).toBe('Gabe'); 
+    expect(searchInput[0].nativeElement.value).toBe('Gabe');
   });
-  });
-  
+});
 
- 
-  // dataservice stub to test the table
-class DataServiceStub{
-  public sendGetRequest(){
+
+
+// dataservice stub to test the table
+class DataServiceStub {
+  public sendGetRequest(): any {
     return of([]);
   }
-  public updateEnrolleeenrollee (enrollee: Enrollee, id: string){
-
+  public updateEnrolleeenrollee(enrollee: Enrollee, id: string): any {
   }
 }

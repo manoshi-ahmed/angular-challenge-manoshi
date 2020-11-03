@@ -8,17 +8,17 @@ import { Enrollee } from 'server/enrollees';
   providedIn: 'root'
 })
 export class DataService {
-  public REST_API_SERVER = "http://localhost:8080/enrollees";
+  public REST_API_SERVER = 'http://localhost:8080/enrollees';
 
   constructor(private httpClient: HttpClient) { }
 
 
-  public sendGetRequest(){
-    var val= this.httpClient.get(this.REST_API_SERVER);
+  public sendGetRequest(): any {
+    const val = this.httpClient.get(this.REST_API_SERVER);
     return val;
   }
 
   updateEnrollee(enrollee: Enrollee, id: string): Observable<any> {
-    return this.httpClient.put(this.REST_API_SERVER +'/' + id, enrollee);
+    return this.httpClient.put(this.REST_API_SERVER + '/' + id, enrollee);
   }
 }
